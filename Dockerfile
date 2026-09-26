@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 # Install system packages and dependencies
 RUN apt-get update && apt-get install -y \
@@ -37,8 +37,8 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Install PHP and Node dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Install PHP and Node dependencies (with PHP 8.4 support)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-req=php+
 RUN npm ci || npm install
 RUN npm run build
 
